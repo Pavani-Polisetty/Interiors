@@ -1,0 +1,91 @@
+/* Page background */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card */
+.container {
+  width: 360px;
+  padding: 35px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Logo */
+.logo-login {
+  width: 95%;
+  font-size: 28px;
+  font-weight: bold;
+  color: #667eea;
+  text-align: center;
+}
+.logo-signup {
+  width: 95%;
+  margin-bottom: 5px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #667eea;
+  text-align: center;
+}
+
+/* Subtitle */
+.subtitle {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+.container input {
+  width: 92%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.container input:focus {
+  border-color: #667eea;
+  outline: none;
+  box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+}
+
+/* Button */
+.container button {
+  width: 95%;
+  padding: 12px;
+  margin-top: 15px;
+  background: #667eea;
+  border: none;
+  color: white;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.container button:hover {
+  background: #5563d6;
+}
+
+/* Links */
+.container p {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.container a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
