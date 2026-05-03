@@ -97,24 +97,17 @@ function Projects() {
   return (
     <section className="projects-section">
       <div className="projects-header-container">
-        <button
-          className="header-back-btn"
-          onClick={() => {
-            if (window.history.length > 1) {
-              navigate(-1);
-              return;
-            }
-            navigate("/");
-          }}
-        >
+        <button className="header-back-btn" onClick={() => navigate("/")}>
           ←
         </button>
         <h1 className="projects-title">Our Projects</h1>
       </div>
 
-<p className="projects-intro">
-  Browse a selection of completed TV units, bedroom wardrobes, cots, kitchen designs, pooja mandir designs, and dress storage designs to see the quality and detailing of our work
-</p>
+      <p className="projects-intro">
+        Browse a selection of completed TV units, bedroom wardrobes, cots,
+        kitchen designs, pooja mandir designs, and dress storage designs to see
+        the quality and detailing of our work
+      </p>
 
       <div className="projects-group">
         <h2 className="category-title">TV Units</h2>

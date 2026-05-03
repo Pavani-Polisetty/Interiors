@@ -24,6 +24,21 @@
   cursor: pointer;
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 25px; /* spacing between items */
+}
+
+.nav-right a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.profile-menu {
+  position: relative;
+}
 
 .logo {
   width: 15%;
@@ -66,6 +81,36 @@
   margin-right: 20px;
 }
 
+.profile-trigger {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: rgb(0, 0, 0);
+  font-weight: 500;
+}
+
+.caret {
+  margin-left: 5px;
+}
+
+.profile-item {
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: black;
+}
+
+.profile-item:hover {
+  background: #f5f5f5;
+}
+
+.profile-item.danger {
+  color: red;
+}
 .hamburger-line {
   width: 100%;
   height: 3px;
@@ -95,6 +140,18 @@
   display: flex;
   flex-direction: column;
   animation: slideIn 0.3s ease;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  min-width: 150px;
+  z-index: 1000;
 }
 
 @keyframes slideIn {
@@ -179,6 +236,7 @@
   }
 
   .mobile-menu-toggle {
+    margin-right: 30px;
     display: flex;
   }
 }
@@ -201,12 +259,6 @@
   .mobile-menu {
     width: 250px;
   }
-}
-
-  border-radius: 10px;
-  cursor: pointer;
-  color: #333;
-  font-weight: 600;
 }
 
 .profile-item:hover {

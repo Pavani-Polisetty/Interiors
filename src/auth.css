@@ -45,6 +45,7 @@ body {
 
 /* Inputs */
 .container input {
+  color: black;
   width: 92%;
   padding: 12px;
   margin: 8px 0;
