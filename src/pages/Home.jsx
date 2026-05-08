@@ -38,6 +38,12 @@ function Home() {
             >
               View Projects
             </button>
+            <button
+              className="secondary-cta"
+              onClick={() => navigate("/booking")}
+            >
+              Book interior service
+            </button>
           </div>
         </div>
 

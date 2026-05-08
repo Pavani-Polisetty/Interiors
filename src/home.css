@@ -79,6 +79,9 @@ body {
   transform: scale(1.5);
   z-index: -1;
 }
+span {
+  color: #f97316;
+}
 
 /* Dark overlay */
 .hero::after {
@@ -99,6 +102,11 @@ body {
   color: #f1f1f1;
   animation: slideUp 1s ease forwards;
   opacity: 0;
+}
+.subtitle {
+  font-size: 18px;
+  color: #f1f1f1;
+  margin-bottom: 12px;
 }
 
 @keyframes slideUp {
