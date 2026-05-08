@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNotification } from "../hooks/useNotification";
 import {
   insertBooking,
   sendBookingEmailNotification,
@@ -20,6 +21,7 @@ const initialForm = {
 function Contact() {
   const [formData, setFormData] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
+  const notification = useNotification();
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -45,7 +47,10 @@ function Contact() {
 
     if (insertError) {
       console.error("Booking insert failed:", insertError);
-      alert(insertError.message || "Could not save booking. Check the bookings table and RLS policies.");
+      notification.error(
+        insertError.message ||
+          "Could not save booking. Check the bookings table and RLS policies.",
+      );
       setSubmitting(false);
       return;
     }
@@ -54,23 +59,30 @@ function Contact() {
       const mailResult = await sendBookingEmailNotification(row);
       console.log("Owner / customer email result:", mailResult);
       if (mailResult?.ownerSandboxFallback) {
-        alert(
+        notification.info(
           "Booking saved. Owner notification was sent to your SMTP account email (sandbox mode). After you configure SMTP properly, you can use any OWNER_EMAIL and send customer confirmations.",
         );
-      } else if (mailResult?.customerEmail?.sent === false && mailResult?.customerEmail?.providerStatus) {
-        alert(
+      } else if (
+        mailResult?.customerEmail?.sent === false &&
+        mailResult?.customerEmail?.providerStatus
+      ) {
+        notification.warning(
           "Booking saved. Owner was notified. Customer confirmation email could not be sent (check SMTP / FROM_EMAIL).",
         );
       } else {
-        alert("Booking saved. Notifications sent.");
+        notification.success("Booking saved. Notifications sent.");
       }
       setFormData(initialForm);
     } catch (err) {
       console.error("send-email failed:", err);
       if (err?.cause) console.error("send-email cause:", err.cause);
-      if (err?.status != null) console.error("send-email HTTP status:", err.status);
-      if (err?.body != null) console.error("send-email response body:", err.body);
-      alert(`Booking saved, but email notification failed.\n\n${formatBookingEmailFailure(err)}`);
+      if (err?.status != null)
+        console.error("send-email HTTP status:", err.status);
+      if (err?.body != null)
+        console.error("send-email response body:", err.body);
+      notification.error(
+        `Booking saved, but email notification failed. ${formatBookingEmailFailure(err)}`,
+      );
     } finally {
       setSubmitting(false);
     }
@@ -116,7 +128,12 @@ function Contact() {
           onChange={handleChange}
         />
 
-        <select name="service" value={formData.service} onChange={handleChange} required>
+        <select
+          name="service"
+          value={formData.service}
+          onChange={handleChange}
+          required
+        >
           <option value="">Select Service</option>
           <option value="Home Interior">Home Interior</option>
           <option value="Modular Kitchen">Modular Kitchen</option>

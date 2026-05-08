@@ -204,3 +204,55 @@ export async function sendBookingEmailNotification(booking) {
     throw e;
   }
 }
+
+/**
+ * Fetch all bookings for a given email address.
+ */
+const missingColumn = (err) => {
+  const m = String(err?.message || err?.hint || "");
+  return (
+    /schema cache/i.test(m) ||
+    /could not find the ['"][\w]+['"] column/i.test(m) ||
+    /column .* does not exist/i.test(m)
+  );
+};
+
+const createdAtMissing = (err) => {
+  const m = String(err?.message || err?.hint || "");
+  return /created_at/i.test(m) || /cannot order by/i.test(m);
+};
+
+async function queryBookingsByEmailColumn(email, column) {
+  let res = await supabase
+    .from("bookings")
+    .select("*")
+    .eq(column, email)
+    .order("created_at", { ascending: false });
+
+  if (res.error && createdAtMissing(res.error)) {
+    res = await supabase.from("bookings").select("*").eq(column, email);
+  }
+
+  return res;
+}
+
+export async function getBookingsByEmail(email) {
+  let res = await queryBookingsByEmailColumn(email, "email");
+
+  if (res.error && missingColumn(res.error)) {
+    res = await queryBookingsByEmailColumn(email, "customer_email");
+  }
+
+  if (!res.error && Array.isArray(res.data) && res.data.length === 0) {
+    const fallback = await queryBookingsByEmailColumn(email, "customer_email");
+    if (
+      !fallback.error &&
+      Array.isArray(fallback.data) &&
+      fallback.data.length > 0
+    ) {
+      return { data: fallback.data, error: null };
+    }
+  }
+
+  return { data: res.data, error: res.error };
+}

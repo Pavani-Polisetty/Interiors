@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { supabase } from "../supabaseClient";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNotification } from "../hooks/useNotification";
 import "../auth.css";
 
 function Signup() {
+  const notification = useNotification();
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -15,7 +17,7 @@ function Signup() {
 
   const handleSignup = async () => {
     if (!username || !phone || !email || !password) {
-      alert("Please fill all fields");
+      notification.warning("Please fill all fields");
       return;
     }
 
@@ -32,7 +34,7 @@ function Signup() {
     });
 
     if (error) {
-      alert(error.message);
+      notification.error(error.message);
       return;
     }
 
@@ -49,9 +51,9 @@ function Signup() {
     ]);
 
     if (profileError) {
-      alert(profileError.message);
+      notification.error(profileError.message);
     } else {
-      alert("Signup successful");
+      notification.success("Signup successful!");
       navigate("/login", { state: { from: location.state?.from } });
     }
   };

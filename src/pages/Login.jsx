@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { supabase } from "../supabaseClient";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNotification } from "../hooks/useNotification";
 import "../auth.css";
 import "./login.css";
 
 function Login() {
+  const notification = useNotification();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,7 +16,7 @@ function Login() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      alert("Please enter email and password");
+      notification.warning("Please enter email and password");
       return;
     }
 
@@ -24,8 +26,9 @@ function Login() {
     });
 
     if (error) {
-      alert(error.message);
+      notification.error(error.message);
     } else {
+      notification.success("Login successful!");
       navigate(from, { replace: true });
     }
   };

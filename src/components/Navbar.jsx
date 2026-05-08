@@ -3,8 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import logo from "../assets/logo.png";
 import "./navbar.css";
 import { supabase } from "../supabaseClient";
+import { useNotification } from "../hooks/useNotification";
 
 function Navbar() {
+  const notification = useNotification();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -15,7 +17,7 @@ function Navbar() {
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      alert(error.message);
+      notification.error(error.message);
       return;
     }
     setMenuOpen(false);

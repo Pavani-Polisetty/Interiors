@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Navbar from "../components/Navbar";
-import { supabase } from "../supabaseClient";
+import { supabase, getBookingsByEmail } from "../supabaseClient";
 import "./profile.css";
 
 function Profile() {
@@ -14,6 +14,9 @@ function Profile() {
   const [editMode, setEditMode] = useState(false);
   const [draftName, setDraftName] = useState("");
   const [draftPhone, setDraftPhone] = useState("");
+  const [bookings, setBookings] = useState([]);
+  const [bookingsLoading, setBookingsLoading] = useState(false);
+  const [bookingError, setBookingError] = useState("");
 
   const isValidPhone = useMemo(() => {
     if (!phone.trim()) return true;
@@ -45,7 +48,8 @@ function Profile() {
           .maybeSingle();
 
         if (!profileError && profile) {
-          const nextName = profile.username ?? meta.full_name ?? meta.name ?? "";
+          const nextName =
+            profile.username ?? meta.full_name ?? meta.name ?? "";
           const nextPhone = profile.phone ?? meta.phone ?? "";
           setName(nextName);
           setPhone(nextPhone);
@@ -73,6 +77,28 @@ function Profile() {
 
     loadUser();
   }, []);
+
+  useEffect(() => {
+    const loadBookings = async () => {
+      if (!email) return;
+
+      setBookingError("");
+      setBookingsLoading(true);
+
+      const { data, error } = await getBookingsByEmail(email);
+      if (error) {
+        console.error("Failed to load bookings:", error);
+        setBookingError("Unable to load bookings for your account.");
+        setBookings([]);
+      } else {
+        setBookings(data || []);
+      }
+
+      setBookingsLoading(false);
+    };
+
+    loadBookings();
+  }, [email]);
 
   const handleCancel = () => {
     setErrorMsg("");
@@ -160,8 +186,12 @@ function Profile() {
             <section className="profile-content profile-panel">
               <header className="profile-content-header">
                 <div>
-                  <h2 className="profile-content-title">Personal Information</h2>
-                  <p className="profile-content-subtitle">Your account details</p>
+                  <h2 className="profile-content-title">
+                    Personal Information
+                  </h2>
+                  <p className="profile-content-subtitle">
+                    Your account details
+                  </p>
                 </div>
 
                 {!editMode ? (
@@ -200,8 +230,12 @@ function Profile() {
                 )}
               </header>
 
-              {errorMsg ? <div className="profile-alert error">{errorMsg}</div> : null}
-              {successMsg ? <div className="profile-alert success">{successMsg}</div> : null}
+              {errorMsg ? (
+                <div className="profile-alert error">{errorMsg}</div>
+              ) : null}
+              {successMsg ? (
+                <div className="profile-alert success">{successMsg}</div>
+              ) : null}
 
               <div className="profile-section">
                 <h4 className="profile-section-title">Personal Details</h4>
@@ -259,6 +293,64 @@ function Profile() {
                 </div>
               </div>
             </section>
+
+            <section className="profile-content profile-panel profile-bookings-panel profile-bookings-full">
+              <header className="profile-content-header">
+                <div>
+                  <h2 className="profile-content-title">Your Bookings</h2>
+                </div>
+              </header>
+
+              {bookingsLoading ? (
+                <div className="profile-bookings-loading">
+                  Loading bookings...
+                </div>
+              ) : bookingError ? (
+                <div className="profile-booking-error">{bookingError}</div>
+              ) : bookings && bookings.length > 0 ? (
+                <div className="profile-bookings-list">
+                  {bookings.map((booking) => (
+                    <div key={booking.id} className="profile-booking-card">
+                      <div className="booking-card-header">
+                        <h5 className="booking-service">{booking.service}</h5>
+                      </div>
+                      <div className="booking-card-details">
+                        <p className="booking-detail">
+                          <strong>Name:</strong> {booking.name}
+                        </p>
+                        <p className="booking-detail">
+                          <strong>Phone:</strong> {booking.phone}
+                        </p>
+                        <p className="booking-detail">
+                          <strong>Address:</strong>{" "}
+                          {booking.address ||
+                            booking.project_address ||
+                            "Not provided"}
+                        </p>
+                        <p className="booking-detail">
+                          <strong>Project Type:</strong>{" "}
+                          {booking.service ||
+                            booking.service_type ||
+                            "Not provided"}
+                        </p>
+                      </div>
+                      <div className="booking-card-footer">
+                        <small className="booking-created">
+                          Booked on{" "}
+                          {booking.created_at
+                            ? new Date(booking.created_at).toLocaleDateString()
+                            : "—"}
+                        </small>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="profile-no-bookings">
+                  <p>You haven't made any bookings yet.</p>
+                </div>
+              )}
+            </section>
           </div>
         )}
       </main>
@@ -267,4 +359,3 @@ function Profile() {
 }
 
 export default Profile;
-

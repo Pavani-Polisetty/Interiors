@@ -1,7 +1,11 @@
 /* Profile page layout (keeps Navbar fixed at top) */
 .profile-page {
   min-height: 100vh;
-  background: radial-gradient(
+  width: 100vw;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background:
+    radial-gradient(
       1200px 600px at 10% 10%,
       rgba(102, 126, 234, 0.18),
       transparent 60%
@@ -15,11 +19,13 @@
 }
 
 .profile-main {
-  padding-top: 130px; /* navbar is 100px fixed + spacing */
+  padding-top: 110px; /* navbar is 100px fixed + spacing */
   padding-inline: 18px;
   padding-bottom: 40px;
   display: flex;
   justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .profile-shell {
@@ -113,6 +119,7 @@
   background: rgba(102, 126, 234, 0.14);
   border-color: rgba(102, 126, 234, 0.35);
   color: #1f2a63;
+  text-align: center;
 }
 
 .profile-content-header {
@@ -234,12 +241,52 @@
   grid-template-columns: 1fr 1fr;
 }
 
-@media (max-width: 720px) {
-  .profile-page{
-    margin-top: 150px;
+@media (max-width: 920px) {
+  .profile-main {
+    padding-inline: 14px;
+    padding-bottom: 32px;
+  }
+  .profile-shell {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .profile-side {
+    margin-top: 500px;
+  }
+  .profile-side,
+  .profile-content {
+    padding: 18px 14px;
+  }
+  .profile-content-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .profile-edit-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .profile-edit,
+  .profile-edit-primary,
+  .profile-edit-secondary {
+    width: 100%;
   }
   .profile-kv.two {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .profile-bookings-list {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .profile-booking-card {
+    flex: 1 1 100%;
+    min-width: 100%;
+  }
+  .booking-card-header {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 
@@ -267,7 +314,9 @@
   font-size: 14px;
   outline: none;
   background: #fff;
-  transition: box-shadow 150ms ease, border-color 150ms ease;
+  transition:
+    box-shadow 150ms ease,
+    border-color 150ms ease;
 }
 
 .profile-inline-input:focus {
@@ -311,3 +360,145 @@
   }
 }
 
+/* Bookings Section Styles */
+.profile-bookings-full {
+  grid-column: 1 / -1;
+}
+
+.profile-bookings-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 16px;
+  margin-top: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.profile-booking-card {
+  flex: 0 0 280px;
+  min-width: 280px;
+  background: linear-gradient(135deg, #f7f8fb 0%, #f0f1f8 100%);
+  border: 1px solid rgba(99, 102, 241, 0.12);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.profile-booking-card:hover {
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.3);
+  transform: translateY(-2px);
+}
+
+.booking-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.booking-service {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+  flex: 1;
+}
+
+.booking-date {
+  background: rgba(99, 102, 241, 0.1);
+  color: #6366f1;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.booking-card-details {
+  margin-bottom: 12px;
+}
+
+.booking-detail {
+  font-size: 13px;
+  color: #64748b;
+  margin: 6px 0;
+  line-height: 1.4;
+}
+
+.booking-detail strong {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.booking-status {
+  color: #f59e0b;
+  margin-top: 8px;
+}
+
+.booking-card-footer {
+  padding-top: 12px;
+  border-top: 1px solid rgba(99, 102, 241, 0.06);
+}
+
+.booking-created {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.profile-bookings-loading {
+  text-align: center;
+  padding: 24px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.profile-no-bookings {
+  text-align: center;
+  padding: 24px;
+  background: rgba(148, 163, 184, 0.05);
+  border-radius: 8px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.profile-no-bookings p {
+  margin: 0;
+}
+
+.profile-booking-error {
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(248, 113, 113, 0.1);
+  color: #b91c1c;
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+@media (max-width: 940px) {
+  .profile-booking-card {
+    flex: 0 0 240px;
+    min-width: 240px;
+  }
+  .profile-side {
+    padding: 18px;
+    width: 333px;
+  }
+  .profile-content {
+    width: 339px;
+  }
+}
+
+@media (max-width: 640px) {
+  .profile-booking-card {
+    flex: 0 0 200px;
+    min-width: 200px;
+  }
+}
+@media (max-width: 920px) {
+  .profile-shell {
+    grid-template-columns: 1fr;
+  }
+}

@@ -20,6 +20,8 @@ import CustomFurniture from "./pages/services/CustomFurniture";
 
 import ProtectedRoute from "./ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
+import { NotificationProvider } from "./contexts/NotificationContext";
+import NotificationContainer from "./components/NotificationContainer";
 
 /* Scroll to top logic */
 function AppRoutes() {
@@ -71,10 +73,13 @@ function AppRoutes() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <AppRoutes />
-    </BrowserRouter>
+    <NotificationProvider>
+      <BrowserRouter>
+        <NotificationContainer />
+        <ScrollToTop />
+        <AppRoutes />
+      </BrowserRouter>
+    </NotificationProvider>
   );
 }
 
