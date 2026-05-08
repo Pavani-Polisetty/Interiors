@@ -60,6 +60,7 @@ function Signup() {
 
   return (
     <div className="container">
+      <button className="back-btn" onClick={() => navigate('/')}>← Back to Home</button>
       <div className="logo-signup">Signup</div>
       <div className="subtitle">Create your account</div>
 

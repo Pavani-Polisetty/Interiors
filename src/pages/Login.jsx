@@ -35,6 +35,9 @@ function Login() {
 
   return (
     <div className="container">
+      <button className="back-btn" onClick={() => navigate("/")}>
+        ← Back to Home
+      </button>
       <div className="logo-login">login to Book Service</div>
       <div className="subtitle">Welcome back</div>
 

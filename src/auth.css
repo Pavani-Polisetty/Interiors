@@ -75,6 +75,23 @@ body {
   transition: 0.3s;
 }
 
+.back-btn {
+  width: 95%;
+  margin: 0 auto 18px;
+  padding: 12px;
+  background: #f5f7ff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.back-btn:hover {
+  background: #e2e8f0;
+}
+
 .container button:hover {
   background: #5563d6;
 }
